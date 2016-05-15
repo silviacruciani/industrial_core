@@ -154,7 +154,7 @@ private:
   /**
    * \brief maximum number of joints positions that can be held in the message.
    */
-  static const industrial::shared_types::shared_int MAX_NUM_JOINTS = 10;
+  static const industrial::shared_types::shared_int MAX_NUM_JOINTS = 20;
   /**
    * \brief internal data buffer
    */
