@@ -64,10 +64,9 @@ public:
   /**
      * \brief Begin processing messages and publishing topics.
      */
-    void run() { ros::spin(); }
+  void run() { ros::spin(); }
 
 private:
-
   typedef actionlib::ActionServer<control_msgs::FollowJointTrajectoryAction> JointTractoryActionServer;
 
   /**
@@ -132,7 +131,7 @@ private:
    * \brief The default goal joint threshold see(goal_threshold). Unit
    * are joint specific (i.e. radians or meters).
    */
-  static const double DEFAULT_GOAL_THRESHOLD_;// = 0.01;
+  static const double DEFAULT_GOAL_THRESHOLD_; // = 0.01;
 
   /**
    * \brief The goal joint threshold used for determining if a robot
@@ -169,7 +168,7 @@ private:
   /**
    * \brief The watchdog period (seconds)
    */
-  static const double WATCHDOG_PERIOD_;// = 1.0;
+  static const double WATCHDOG_PERIOD_; // = 1.0;
 
   /**
    * \brief Watch dog callback, used to detect robot driver failures
@@ -185,7 +184,7 @@ private:
    * \param gh goal handle
    *
    */
-  void goalCB(JointTractoryActionServer::GoalHandle & gh);
+  void goalCB(JointTractoryActionServer::GoalHandle gh);
 
   /**
    * \brief Action server cancel callback method
@@ -194,7 +193,7 @@ private:
    *
    */
 
-  void cancelCB(JointTractoryActionServer::GoalHandle & gh);
+  void cancelCB(JointTractoryActionServer::GoalHandle gh);
   /**
    * \brief Controller state callback (executed when feedback message
    * received)
@@ -232,10 +231,10 @@ private:
    *
    */
   bool withinGoalConstraints(const control_msgs::FollowJointTrajectoryFeedbackConstPtr &msg,
-                             const trajectory_msgs::JointTrajectory & traj);
+                             const trajectory_msgs::JointTrajectory &traj);
 };
 
-} //joint_trajectory_action
-} //industrial_robot_client
+} // namespace joint_trajectory_action
+} // namespace industrial_robot_client
 
 #endif /* JOINT_TRAJTORY_ACTION_H */

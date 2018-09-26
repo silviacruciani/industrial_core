@@ -42,10 +42,10 @@ namespace joint_trajectory_action
 const double JointTrajectoryAction::WATCHDOG_PERIOD_ = 1.0;
 const double JointTrajectoryAction::DEFAULT_GOAL_THRESHOLD_ = 0.01;
 
-JointTrajectoryAction::JointTrajectoryAction() :
-    action_server_(node_, "joint_trajectory_action", boost::bind(&JointTrajectoryAction::goalCB, this, _1),
-                   boost::bind(&JointTrajectoryAction::cancelCB, this, _1), false), has_active_goal_(false),
-                       controller_alive_(false), has_moved_once_(false)
+JointTrajectoryAction::JointTrajectoryAction() : action_server_(node_, "joint_trajectory_action", boost::bind(&JointTrajectoryAction::goalCB, this, _1),
+                                                                boost::bind(&JointTrajectoryAction::cancelCB, this, _1), false),
+                                                 has_active_goal_(false),
+                                                 controller_alive_(false), has_moved_once_(false)
 {
   ros::NodeHandle pn("~");
 
@@ -88,7 +88,6 @@ void JointTrajectoryAction::watchdog(const ros::TimerEvent &e)
   ROS_WARN("Trajectory state not received for %f seconds", WATCHDOG_PERIOD_);
   controller_alive_ = false;
 
-
   // Aborts the active goal if the controller does not appear to be active.
   if (has_active_goal_)
   {
@@ -107,7 +106,7 @@ void JointTrajectoryAction::watchdog(const ros::TimerEvent &e)
   }
 }
 
-void JointTrajectoryAction::goalCB(JointTractoryActionServer::GoalHandle & gh)
+void JointTrajectoryAction::goalCB(JointTractoryActionServer::GoalHandle gh)
 {
   ROS_INFO("Received new goal");
 
@@ -134,19 +133,18 @@ void JointTrajectoryAction::goalCB(JointTractoryActionServer::GoalHandle & gh)
         ROS_WARN("Received new goal, canceling current goal");
         abortGoal();
       }
-      
+
       gh.setAccepted();
       active_goal_ = gh;
       has_active_goal_ = true;
-      time_to_check_ = ros::Time::now() + 
-          ros::Duration(active_goal_.getGoal()->trajectory.points.back().time_from_start.toSec() / 2.0);
+      time_to_check_ = ros::Time::now() +
+                       ros::Duration(active_goal_.getGoal()->trajectory.points.back().time_from_start.toSec() / 2.0);
       has_moved_once_ = false;
 
       ROS_INFO("Publishing trajectory");
 
       current_traj_ = active_goal_.getGoal()->trajectory;
       pub_trajectory_command_.publish(current_traj_);
-    
     }
     else
     {
@@ -180,7 +178,7 @@ void JointTrajectoryAction::goalCB(JointTractoryActionServer::GoalHandle & gh)
   }
 }
 
-void JointTrajectoryAction::cancelCB(JointTractoryActionServer::GoalHandle & gh)
+void JointTrajectoryAction::cancelCB(JointTractoryActionServer::GoalHandle gh)
 {
   ROS_DEBUG("Received action cancel request");
   if (active_goal_ == gh)
@@ -284,7 +282,7 @@ void JointTrajectoryAction::abortGoal()
 }
 
 bool JointTrajectoryAction::withinGoalConstraints(const control_msgs::FollowJointTrajectoryFeedbackConstPtr &msg,
-                                                  const trajectory_msgs::JointTrajectory & traj)
+                                                  const trajectory_msgs::JointTrajectory &traj)
 {
   bool rtn = false;
   if (traj.points.empty())
@@ -310,6 +308,5 @@ bool JointTrajectoryAction::withinGoalConstraints(const control_msgs::FollowJoin
   return rtn;
 }
 
-} //joint_trajectory_action
-} //industrial_robot_client
-
+} // namespace joint_trajectory_action
+} // namespace industrial_robot_client
